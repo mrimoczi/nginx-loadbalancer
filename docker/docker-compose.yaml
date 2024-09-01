@@ -1,0 +1,25 @@
+version: '3'
+services:
+  backend:
+    image: bitnami/apache:latest
+    environment:
+      - bitnami/apache:latest 
+    deploy:
+      replicas: 4
+    volumes:
+      - ../backend:/app
+    networks:
+      - loadbalancing
+
+  nginx:
+    build: ../nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    networks:
+      - loadbalancing
+    depends_on:
+      - backend
+
+networks:
+  loadbalancing:
